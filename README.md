@@ -31,7 +31,10 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 
 - [Features](#features)
 - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [PUB400 Initial Setup](#pub400-initial-setup)
     - [Usage](#usage)
+    - [Scripts](#scripts)
     - [Important Notes](#important-notes)
 - [Resources](#resources)
 - [License](#license)
@@ -45,23 +48,80 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 
 ## Getting Started
 
+### Prerequisites
+
+- A [PUB400.COM](https://pub400.com) account (free — register with an IBM ID)
+- A TN5250 terminal emulator (for initial sign-on and interactive use)
+- SSH client (for file transfer and command execution)
+
+### PUB400 Initial Setup
+
+1. **Install a TN5250 client:**
+   - **Linux:** Build from source — [github.com/tn5250/tn5250](https://github.com/tn5250/tn5250)
+   - **macOS/Windows:** See [tn5250j.org](http://tn5250j.org) or the [PUB400 tools page](https://pub400.com)
+
+2. **Connect and sign on:**
+   ```bash
+   tn5250 PUB400.COM
+   ```
+   - Enter your username and initial password at the sign-on screen
+   - On first sign-on, you will be forced to change your password
+   - Enter your initial password, then your new password twice
+
+3. **SSH access** (available after password change):
+   ```bash
+   ssh -p 2222 YOUR_USERNAME@PUB400.COM
+   ```
+   > **Note:** PUB400 uses port **2222** for SSH, not the default 22.
+
 ### Usage
 
 1. Clone this repository to your local machine.
-2. Customize the program by specifying the correct file names for inputFile and outputFile.
-3. See [process.rpgle](process.rpgle) as an example.
-4. Ensure you have access to the required input and output files.
-5. Compile and run the `RPGLE` program using an `RPG` compiler (e.g., IBM Rational Development Studio, IBM i PDM, etc.).
-6. Check the output file to view the processed data.
+2. Set your PUB400 username:
+   ```bash
+   export PUB400_USERNAME=YOUR_USERNAME
+   ```
+3. **Connect via TN5250** (interactive green-screen):
+   ```bash
+   ./scripts/connect.sh
+   ```
+4. **Connect via SSH** (PASE shell):
+   ```bash
+   ./scripts/ssh-connect.sh
+   ```
+5. **Upload RPGLE source** to PUB400:
+   ```bash
+   ./scripts/upload.sh                    # uploads all *.rpgle files
+   ./scripts/upload.sh process.rpgle      # upload a specific file
+   ```
+6. **Compile on PUB400:**
+   ```bash
+   ./scripts/compile.sh                   # compiles process.rpgle by default
+   ./scripts/compile.sh my_program        # compile a specific source
+   ```
+7. Check the output file to view the processed data.
+
+### Scripts
+
+| Script | Description |
+|--------|-------------|
+| [`scripts/connect.sh`](scripts/connect.sh) | Connect to PUB400 via TN5250 terminal |
+| [`scripts/ssh-connect.sh`](scripts/ssh-connect.sh) | Connect to PUB400 via SSH (PASE shell) |
+| [`scripts/upload.sh`](scripts/upload.sh) | Upload RPGLE source files via SFTP |
+| [`scripts/compile.sh`](scripts/compile.sh) | Compile RPGLE source on PUB400 via SSH |
 
 ### Important Notes
 
 - This is a simplified example for demonstration purposes.
 - The program assumes that the input and output files are defined and accessible on the IBM i (AS/400) system.
+- PUB400.COM is a shared public system — be respectful of other users and system resources.
 
 ## Resources
 
 - [IBM RPGLE Reference](https://www.ibm.com/docs/en/i/7.4)
+- [PUB400.COM](https://pub400.com) — Free public IBM i system
+- [TN5250 Terminal Emulator](https://github.com/tn5250/tn5250)
+- [IBM i PASE](https://www.ibm.com/docs/en/i/7.4?topic=pase-overview) — Portable Application Solutions Environment
 
 ## License
 
