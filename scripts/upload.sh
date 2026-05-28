@@ -48,7 +48,7 @@ for f in "${FILES[@]}"; do
 done
 echo "ls -la" >> "${BATCH_FILE}"
 
-sftp -o StrictHostKeyChecking=accept-new -P "${PORT}" -b "${BATCH_FILE}" "${PUB400_USERNAME}@${HOST}"
+sftp -o StrictHostKeyChecking=accept-new -o PubkeyAuthentication=no -P "${PORT}" -b "${BATCH_FILE}" "${PUB400_USERNAME}@${HOST}"
 
 echo ""
 echo "Upload complete. Files are in ${REMOTE_DIR}/ on ${HOST}."

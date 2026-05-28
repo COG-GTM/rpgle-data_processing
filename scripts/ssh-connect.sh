@@ -21,4 +21,4 @@ fi
 
 echo "Connecting to ${HOST}:${PORT} as ${PUB400_USERNAME} via SSH..."
 
-ssh -o StrictHostKeyChecking=accept-new -p "${PORT}" "${PUB400_USERNAME}@${HOST}"
+ssh -o StrictHostKeyChecking=accept-new -o PubkeyAuthentication=no -p "${PORT}" "${PUB400_USERNAME}@${HOST}"

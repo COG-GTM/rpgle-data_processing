@@ -49,4 +49,4 @@ EOF
 echo "Compiling ${SOURCE}.rpgle on ${HOST} in library ${LIB}..."
 echo ""
 
-ssh -o StrictHostKeyChecking=accept-new -p "${PORT}" "${PUB400_USERNAME}@${HOST}" "${COMMANDS}"
+ssh -o StrictHostKeyChecking=accept-new -o PubkeyAuthentication=no -p "${PORT}" "${PUB400_USERNAME}@${HOST}" "${COMMANDS}"
