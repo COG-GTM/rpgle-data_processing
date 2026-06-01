@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Show the latest data this program produced on PUB400, without recompiling.
-# Prints the current OUTPUTF rows and the single LASTRUN "last updated" timestamp.
+# Show the current data on PUB400, read-only (does not change anything).
+# Prints the current ITEMS rows and the single LASTRUN "last updated" timestamp.
 #
 # Requires:
 #   PUB400_USERNAME  - your PUB400 user profile
@@ -20,8 +20,8 @@ LIB="${PUB400_LIB:-${USER_UC}1}"
 
 ssh_run() { sshpass -p "$PUB400_PASSWORD" ssh -p "$SSH_PORT" -o StrictHostKeyChecking=accept-new "$PUB400_USERNAME@$HOST" "$@"; }
 
-echo ">> OUTPUTF (latest results) in $LIB:"
-ssh_run "system \"RUNQRY QRYFILE(($LIB/OUTPUTF)) OUTTYPE(*RUNOPT)\""
+echo ">> ITEMS (current quantities) in $LIB:"
+ssh_run "system \"RUNQRY QRYFILE(($LIB/ITEMS)) OUTTYPE(*RUNOPT)\""
 
 echo
 echo ">> LASTRUN (when PROCESS last ran) in $LIB:"
