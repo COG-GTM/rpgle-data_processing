@@ -47,7 +47,7 @@ This repository contains an example `RPGLE` program that demonstrates updating r
 
 ### Usage
 
-RPG is compiled and run **on the IBM i itself** (not on your laptop). [process.rpgle](process.rpgle) was compiled and run on [PUB400.COM](https://pub400.com), a free public IBM i (OS400 V7R5). Two scripts wrap the whole workflow — set your credentials first:
+RPG is compiled and run **on the IBM i itself** (not on your laptop). [process.rpgle](process.rpgle) was compiled and run on [PUB400.COM](https://pub400.com), a free public IBM i (OS400 V7R5). Two scripts in [ssh/](ssh/) wrap the whole workflow (they connect over SSH); set your credentials first:
 
 ```bash
 export PUB400_USERNAME=YOURUSER
@@ -57,22 +57,24 @@ export PUB400_PASSWORD=yourpassword
 **Run it** (adds 1 to every quantity). The first run also creates + seeds the `ITEMS` table and compiles the program:
 
 ```bash
-./run.sh
+./ssh/run.sh
 ```
 
 **View the values** (read-only — current `ITEMS` rows + the `LASTRUN` timestamp):
 
 ```bash
-./show.sh
+./ssh/show.sh
 ```
 
 **After editing `process.rpgle`** (e.g. changing `QTY + 1` to `QTY + 2`), redeploy by forcing a recompile, then run as usual:
 
 ```bash
-./run.sh rebuild
+./ssh/run.sh rebuild
 ```
 
-See [pub400/README.md](pub400/README.md) for details, manual connection steps, and IBM i gotchas.
+**No SSH on your IBM i?** 5250 (telnet) almost always is. `./5250/run.sh` and `./5250/show.sh` don't connect — they just print the commands to type by hand in a green-screen session.
+
+See [pub400/README.md](pub400/README.md) for details, the 5250 commands, and IBM i gotchas.
 
 ### Important Notes
 

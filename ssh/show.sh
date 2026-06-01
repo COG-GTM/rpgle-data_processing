@@ -8,7 +8,7 @@
 # Optional:
 #   PUB400_LIB       - target library (default: <USERNAME-uppercase>1, your *CURLIB)
 #
-# Usage:  ./show.sh
+# Usage:  ./ssh/show.sh
 set -euo pipefail
 
 HOST="pub400.com"; SSH_PORT=2222

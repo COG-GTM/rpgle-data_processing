@@ -12,8 +12,8 @@
 #   PUB400_LIB       - target library (default: <USERNAME-uppercase>1, your *CURLIB)
 #
 # Usage:
-#   ./run.sh            # increment by 1 (sets up + compiles on first run)
-#   ./run.sh rebuild    # force a recompile (after editing process.rpgle)
+#   ./ssh/run.sh            # increment by 1 (sets up + compiles on first run)
+#   ./ssh/run.sh rebuild    # force a recompile (after editing process.rpgle)
 set -euo pipefail
 
 HOST="pub400.com"; SSH_PORT=2222
@@ -25,6 +25,7 @@ LIB="${PUB400_LIB:-${USER_UC}1}"
 HOMEDIR="/home/${USER_UC}"
 REMOTE_DIR="${HOMEDIR}/rpgle"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 MODE="${1:-run}"
 
 ssh_run() { sshpass -p "$PUB400_PASSWORD" ssh -p "$SSH_PORT" -o StrictHostKeyChecking=accept-new "$PUB400_USERNAME@$HOST" "$@"; }
@@ -37,14 +38,14 @@ have()    { ssh_run "system \"CHKOBJ OBJ($LIB/$1) OBJTYPE($2)\"" >/dev/null 2>&1
 if ! have ITEMS "*FILE"; then
   echo ">> first run: creating + seeding $LIB/ITEMS"
   ssh_run "mkdir -p '$REMOTE_DIR'"
-  scp_put "$SCRIPT_DIR/pub400/setup.sql" "$REMOTE_DIR/setup.sql"
+  scp_put "$REPO_ROOT/pub400/setup.sql" "$REMOTE_DIR/setup.sql"
   cl "RUNSQLSTM SRCSTMF('$REMOTE_DIR/setup.sql') COMMIT(*NONE) NAMING(*SQL) ERRLVL(20)" || true
 fi
 
 # 2. Compile the program if it's missing (or when asked to rebuild).
 if [ "$MODE" = "rebuild" ] || ! have PROCESS "*PGM"; then
   echo ">> compiling $LIB/PROCESS"
-  scp_put "$SCRIPT_DIR/process.rpgle" "$REMOTE_DIR/process.rpgle"
+  scp_put "$REPO_ROOT/process.rpgle" "$REMOTE_DIR/process.rpgle"
   cl "CRTSRCPF FILE($LIB/QRPGLESRC) RCDLEN(112)" || true
   cl "ADDPFM FILE($LIB/QRPGLESRC) MBR(PROCESS) SRCTYPE(RPGLE)" || true
   cl "CPYFRMSTMF FROMSTMF('$REMOTE_DIR/process.rpgle') TOMBR('/QSYS.LIB/$LIB.LIB/QRPGLESRC.FILE/PROCESS.MBR') MBROPT(*REPLACE) STMFCCSID(1208)"
