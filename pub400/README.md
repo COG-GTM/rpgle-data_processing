@@ -1,15 +1,16 @@
 # Running this example on PUB400 (a public IBM i)
 
 The top-level [`process.rpgle`](../process.rpgle) reads each record from an input file,
-doubles the `Quantity` field, and writes the result to an output file. This folder contains
-everything needed to compile and run it on a real IBM i. It was tested against
-[PUB400.COM](https://pub400.com), a free public IBM i (currently OS400 V7R5).
+adds 1 to the `Quantity` field, writes the result to an output file, and stamps the time of
+the run into a single-row `LASTRUN` control file. This folder contains everything needed to
+compile and run it on a real IBM i. It was tested against [PUB400.COM](https://pub400.com),
+a free public IBM i (currently OS400 V7R5).
 
 ## Contents
 | File | Purpose |
 |------|---------|
 | [`../process.rpgle`](../process.rpgle) | The RPGLE program (fully free-form, real file I/O) |
-| [`setup.sql`](setup.sql) | Creates the `INPUTF` / `OUTPUTF` files and sample data |
+| [`setup.sql`](setup.sql) | Creates the `INPUTF` / `OUTPUTF` / `LASTRUN` files and sample data |
 | [`deploy.sh`](deploy.sh) | Upload → create files → compile → run, end-to-end |
 | [`connect.sh`](connect.sh) | Open an SSH (PASE) shell or a 5250 green screen |
 
@@ -29,12 +30,15 @@ everything needed to compile and run it on a real IBM i. It was tested against
 ```
 Expected tail:
 ```
->> OUTPUTF (QTY should be doubled):
+>> OUTPUTF (QTY should be input + 1):
     ID   ITEMNAME                           QTY
-     1   Widget                              20
-     2   Gadget                              50
-     3   Gizmo                                6
-     4   Doohickey                          200
+     1   Widget                              11
+     2   Gadget                              26
+     3   Gizmo                                4
+     4   Doohickey                          101
+>> LASTRUN (time of this run):
+UPDATED
+2026-06-01-17.21.10.901820
 ```
 
 ## Connecting manually

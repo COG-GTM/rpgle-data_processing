@@ -35,7 +35,9 @@ scp_put "$SCRIPT_DIR/setup.sql"     "$REMOTE_DIR/setup.sql"
 scp_put "$REPO_ROOT/process.rpgle" "$REMOTE_DIR/process.rpgle"
 
 echo ">> creating files + sample data"
-cl "RUNSQLSTM SRCSTMF('$REMOTE_DIR/setup.sql') COMMIT(*NONE) NAMING(*SQL)" || true
+# ERRLVL(20) so a "DROP ... not found" (SQL0204, sev 20) on a first/clean run
+# doesn't halt the script before the CREATEs run.
+cl "RUNSQLSTM SRCSTMF('$REMOTE_DIR/setup.sql') COMMIT(*NONE) NAMING(*SQL) ERRLVL(20)" || true
 
 echo ">> compiling $LIB/PROCESS"
 cl "CRTSRCPF FILE($LIB/QRPGLESRC) RCDLEN(112)" || true
@@ -47,5 +49,8 @@ echo ">> running PROCESS"
 cl "CLRPFM FILE($LIB/OUTPUTF)" || true
 cl "CALL PGM($LIB/PROCESS)"
 
-echo ">> OUTPUTF (QTY should be doubled):"
+echo ">> OUTPUTF (QTY should be input + 1):"
 ssh_run "system \"RUNQRY QRYFILE(($LIB/OUTPUTF)) OUTTYPE(*RUNOPT)\""
+
+echo ">> LASTRUN (time of this run):"
+ssh_run "system \"RUNQRY QRYFILE(($LIB/LASTRUN)) OUTTYPE(*RUNOPT)\""

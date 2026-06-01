@@ -41,7 +41,8 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 ## Features
 
 - Reads each record from an input file (`INPUTF`).
-- Doubles the `Quantity` field and writes the result to an output file (`OUTPUTF`).
+- Adds 1 to the `Quantity` field and writes the result to an output file (`OUTPUTF`).
+- Stamps the time of the run into a single-row `LASTRUN` control file.
 - Illustrates a basic read → transform → write loop with real file I/O on IBM i.
 
 ## Getting Started
