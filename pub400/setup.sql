@@ -1,4 +1,4 @@
--- Input/output physical files for process2.rpgle, plus sample data.
+-- Input/output physical files for ../process.rpgle, plus sample data.
 -- Run with: RUNSQLSTM SRCSTMF('.../setup.sql') COMMIT(*NONE) NAMING(*SQL)
 --
 -- NOTE: PUB400's job CCSID is 273 (German), where the SQL decimal separator is

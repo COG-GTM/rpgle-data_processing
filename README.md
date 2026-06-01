@@ -32,7 +32,7 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 - [Features](#features)
 - [Getting Started](#getting-started)
     - [Usage](#usage)
-    - [Running on PUB400 (runnable version)](#running-on-pub400-runnable-version)
+    - [Running on PUB400](#running-on-pub400)
     - [Important Notes](#important-notes)
 - [Resources](#resources)
 - [License](#license)
@@ -40,9 +40,9 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 
 ## Features
 
-- Reads data from an input file (`INPUTFILE`) using the `ReadInput` procedure.
-- Processes each record to double the Quantity field and writes the result to an output file (`OUTPUTFILE`) using the WriteOutput procedure.
-- Illustrates basic file I/O operations, data manipulation, and modularization of code using procedures.
+- Reads each record from an input file (`INPUTF`).
+- Doubles the `Quantity` field and writes the result to an output file (`OUTPUTF`).
+- Illustrates a basic read → transform → write loop with real file I/O on IBM i.
 
 ## Getting Started
 
@@ -55,9 +55,9 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 5. Compile and run the `RPGLE` program using an `RPG` compiler (e.g., IBM Rational Development Studio, IBM i PDM, etc.).
 6. Check the output file to view the processed data.
 
-### Running on PUB400 (runnable version)
+### Running on PUB400
 
-The top-level [process.rpgle](process.rpgle) is an illustrative snippet and does not compile as-is. The [pub400/](pub400/) folder contains a **runnable** adaptation of the same logic that was compiled and executed on [PUB400.COM](https://pub400.com) (a free public IBM i). With `PUB400_USERNAME` / `PUB400_PASSWORD` set, deploy and run it end-to-end:
+[process.rpgle](process.rpgle) was compiled and executed on [PUB400.COM](https://pub400.com), a free public IBM i (OS400 V7R5). The [pub400/](pub400/) folder has everything needed to reproduce it. With `PUB400_USERNAME` / `PUB400_PASSWORD` set, deploy and run it end-to-end:
 
 ```bash
 ./pub400/deploy.sh

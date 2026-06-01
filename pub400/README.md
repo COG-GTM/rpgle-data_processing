@@ -1,17 +1,14 @@
 # Running this example on PUB400 (a public IBM i)
 
-The top-level [`process.rpgle`](../process.rpgle) is an **illustrative** snippet — it
-mixes `**FREE` with fixed-format specs, `/COPY`s a copybook that may not exist, and uses
-`Open/Read/Write` against a variable, so it does not compile as-is.
-
-This folder contains a **runnable** adaptation of the same idea (read records → double the
-`Quantity` → write to an output file) that compiles and runs on a real IBM i. It was tested
-against [PUB400.COM](https://pub400.com), a free public IBM i (currently OS400 V7R5).
+The top-level [`process.rpgle`](../process.rpgle) reads each record from an input file,
+doubles the `Quantity` field, and writes the result to an output file. This folder contains
+everything needed to compile and run it on a real IBM i. It was tested against
+[PUB400.COM](https://pub400.com), a free public IBM i (currently OS400 V7R5).
 
 ## Contents
 | File | Purpose |
 |------|---------|
-| [`process2.rpgle`](process2.rpgle) | Fully free-form RPGLE program with real file I/O |
+| [`../process.rpgle`](../process.rpgle) | The RPGLE program (fully free-form, real file I/O) |
 | [`setup.sql`](setup.sql) | Creates the `INPUTF` / `OUTPUTF` files and sample data |
 | [`deploy.sh`](deploy.sh) | Upload → create files → compile → run, end-to-end |
 | [`connect.sh`](connect.sh) | Open an SSH (PASE) shell or a 5250 green screen |
@@ -51,7 +48,7 @@ Expected tail:
 - **Decimal separator:** PUB400's job CCSID is 273 (German), so SQL treats the comma as the
   decimal point. `DECIMAL(5,0)` mis-parses — use `DECIMAL(5)` (scale defaults to 0).
 - **Record format names:** an SQL-created table gives its record format the same name as the
-  table. RPG does not allow a format to share the file's name, so `process2.rpgle` uses
+  table. RPG does not allow a format to share the file's name, so `process.rpgle` uses
   `rename(INPUTF:INPREC)` / `rename(OUTPUTF:OUTREC)`.
 - **Ports:** 23 = 5250 (telnet), 992 = 5250 over SSL, 2222 = SSH (PASE). Port 22 is closed.
 - **CL from PASE:** run CL commands with `system "…"`, e.g. `system "WRKACTJOB"`.
