@@ -20,7 +20,7 @@
 
 <h1 align="center">RPGLE Program: Data Processing Example</h1>
 
-This repository contains an example `RPGLE` program that demonstrates reading data from an input file, processing it, and writing the results to an output file.
+This repository contains an example `RPGLE` program that demonstrates updating rows in a database table on the IBM i: it adds 1 to the `Quantity` of every item, in place, each time it runs.
 - `RPGLE` is a high-level programming language for business applications.
 - The program is written in `RPGLE` for the IBM i (AS/400) system.
 - The program is designed to be compiled and run on the IBM i (AS/400) system.
@@ -39,25 +39,47 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 
 ## Features
 
-- Reads data from an input file (`INPUTFILE`) using the `ReadInput` procedure.
-- Processes each record to double the Quantity field and writes the result to an output file (`OUTPUTFILE`) using the WriteOutput procedure.
-- Illustrates basic file I/O operations, data manipulation, and modularization of code using procedures.
+- Adds 1 to the `Quantity` of every row in the `ITEMS` table, in place (cumulative across runs).
+- Stamps the time of the run into a single-row `LASTRUN` control file.
+- Illustrates reading, updating, and writing rows of a DB2-for-i table from RPG.
 
 ## Getting Started
 
 ### Usage
 
-1. Clone this repository to your local machine.
-2. Customize the program by specifying the correct file names for inputFile and outputFile.
-3. See [process.rpgle](process.rpgle) as an example.
-4. Ensure you have access to the required input and output files.
-5. Compile and run the `RPGLE` program using an `RPG` compiler (e.g., IBM Rational Development Studio, IBM i PDM, etc.).
-6. Check the output file to view the processed data.
+RPG is compiled and run **on the IBM i itself** (not on your laptop). [process.rpgle](process.rpgle) was compiled and run on [PUB400.COM](https://pub400.com), a free public IBM i (OS400 V7R5). Two scripts in [ssh/](ssh/) wrap the whole workflow (they connect over SSH); set your credentials first:
+
+```bash
+export PUB400_USERNAME=YOURUSER
+export PUB400_PASSWORD=yourpassword
+```
+
+**Run it** (adds 1 to every quantity). The first run also creates + seeds the `ITEMS` table and compiles the program:
+
+```bash
+./ssh/run.sh
+```
+
+**View the values** (read-only — current `ITEMS` rows + the `LASTRUN` timestamp):
+
+```bash
+./ssh/show.sh
+```
+
+**After editing `process.rpgle`** (e.g. changing `QTY + 1` to `QTY + 2`), redeploy by forcing a recompile, then run as usual:
+
+```bash
+./ssh/run.sh rebuild
+```
+
+**No SSH on your IBM i?** 5250 (telnet) almost always is. `./5250/run.sh` and `./5250/show.sh` don't connect — they just print the commands to type by hand in a green-screen session.
+
+See [pub400/README.md](pub400/README.md) for details, the 5250 commands, and IBM i gotchas.
 
 ### Important Notes
 
 - This is a simplified example for demonstration purposes.
-- The program assumes that the input and output files are defined and accessible on the IBM i (AS/400) system.
+- `ITEMS` and `LASTRUN` are DB2-for-i tables created by [pub400/setup.sql](pub400/setup.sql); the values persist on the server and accumulate across runs.
 
 ## Resources
 
