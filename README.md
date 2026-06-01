@@ -64,6 +64,12 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 ./pub400/deploy.sh
 ```
 
+To just view the latest results (current `OUTPUTF` rows + the `LASTRUN` timestamp) without recompiling:
+
+```bash
+./show.sh
+```
+
 See [pub400/README.md](pub400/README.md) for details, manual connection steps, and IBM i gotchas.
 
 ### Important Notes

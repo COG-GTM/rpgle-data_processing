@@ -13,6 +13,7 @@ a free public IBM i (currently OS400 V7R5).
 | [`setup.sql`](setup.sql) | Creates the `INPUTF` / `OUTPUTF` / `LASTRUN` files and sample data |
 | [`deploy.sh`](deploy.sh) | Upload → create files → compile → run, end-to-end |
 | [`connect.sh`](connect.sh) | Open an SSH (PASE) shell or a 5250 green screen |
+| [`../show.sh`](../show.sh) | Print the latest `OUTPUTF` rows + `LASTRUN` timestamp (no recompile) |
 
 ## Prerequisites
 - A PUB400 account (free at https://pub400.com).
