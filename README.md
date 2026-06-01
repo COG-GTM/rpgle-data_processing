@@ -32,6 +32,7 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 - [Features](#features)
 - [Getting Started](#getting-started)
     - [Usage](#usage)
+    - [Running on PUB400 (runnable version)](#running-on-pub400-runnable-version)
     - [Important Notes](#important-notes)
 - [Resources](#resources)
 - [License](#license)
@@ -53,6 +54,16 @@ This repository contains an example `RPGLE` program that demonstrates reading da
 4. Ensure you have access to the required input and output files.
 5. Compile and run the `RPGLE` program using an `RPG` compiler (e.g., IBM Rational Development Studio, IBM i PDM, etc.).
 6. Check the output file to view the processed data.
+
+### Running on PUB400 (runnable version)
+
+The top-level [process.rpgle](process.rpgle) is an illustrative snippet and does not compile as-is. The [pub400/](pub400/) folder contains a **runnable** adaptation of the same logic that was compiled and executed on [PUB400.COM](https://pub400.com) (a free public IBM i). With `PUB400_USERNAME` / `PUB400_PASSWORD` set, deploy and run it end-to-end:
+
+```bash
+./pub400/deploy.sh
+```
+
+See [pub400/README.md](pub400/README.md) for details, manual connection steps, and IBM i gotchas.
 
 ### Important Notes
 
